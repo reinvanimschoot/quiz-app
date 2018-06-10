@@ -2,8 +2,14 @@ import { Context } from 'react-apollo';
 
 import { ANSWERED_QUESTIONS } from './queries';
 
-export const defaults: { answeredQuestions: AnsweredQuestion[] } = {
+export const defaults: {
+  answeredQuestions: AnsweredQuestion[];
+  questionAmount: string;
+  difficulty: string;
+} = {
   answeredQuestions: [],
+  difficulty: 'medium',
+  questionAmount: '10',
 };
 
 export const resolvers = {
@@ -32,6 +38,18 @@ export const resolvers = {
     },
     clearAnsweredQuestions: (_: never, args: never, { cache }: Context): null => {
       cache.writeData({ data: { answeredQuestions: [] } });
+      return null;
+    },
+    setDifficulty: (_: never, { difficulty }: { difficulty: string }, { cache }: Context): null => {
+      cache.writeData({ data: { difficulty } });
+      return null;
+    },
+    setQuestionAmount: (
+      _: never,
+      { questionAmount }: { questionAmount: string },
+      { cache }: Context,
+    ): null => {
+      cache.writeData({ data: { questionAmount } });
       return null;
     },
   },
