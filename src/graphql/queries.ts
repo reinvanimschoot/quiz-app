@@ -11,3 +11,14 @@ export const TRIVIA_QUESTIONS = gql`
     }
   }
 `;
+
+// Local state
+export const ANSWERED_QUESTIONS = gql`
+  query {
+    answeredQuestions @client {
+      question
+      userAnswer
+      correctAnswer
+    }
+  }
+`;

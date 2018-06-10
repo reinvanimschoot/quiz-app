@@ -1,8 +1,16 @@
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { RestLink } from 'apollo-link-rest';
+import { withClientState } from 'apollo-link-state';
+import { ApolloLink } from 'apollo-link';
 
-const link = new RestLink({
+import { defaults, resolvers } from './graphql/localState';
+
+const cache = new InMemoryCache();
+
+const stateLink = withClientState({ cache, defaults, resolvers });
+
+const restLink = new RestLink({
   uri: 'https://opentdb.com',
   typePatcher: {
     TriviaQuestionsPayload: (data: any): any => {
@@ -15,6 +23,6 @@ const link = new RestLink({
 });
 
 export default new ApolloClient({
-  link,
-  cache: new InMemoryCache(),
+  link: ApolloLink.from([stateLink, restLink]),
+  cache,
 });
