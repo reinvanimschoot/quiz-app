@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 
 export const TRIVIA_QUESTIONS = gql`
-  query {
-    triviaQuestions(amount: 5, difficulty: "easy")
+  query($questionAmount: String!, $difficulty: String!) {
+    triviaQuestions(questionAmount: $questionAmount, difficulty: $difficulty)
       @rest(
         type: "TriviaQuestionsPayload"
-        path: "/api.php?amount=:amount&difficulty=:difficulty&type=boolean"
+        path: "/api.php?amount=:questionAmount&difficulty=:difficulty&type=boolean"
       ) {
       results
     }
@@ -20,5 +20,12 @@ export const ANSWERED_QUESTIONS = gql`
       userAnswer
       correctAnswer
     }
+  }
+`;
+
+export const OPTIONS = gql`
+  query {
+    difficulty @client
+    questionAmount @client
   }
 `;

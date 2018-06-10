@@ -16,3 +16,15 @@ export const CLEAR_ANSWERED_QUESTIONS = gql`
     clearAnsweredQuestions @client
   }
 `;
+
+export const SET_DIFFICULTY = gql`
+  mutation($difficulty: String!) {
+    setDifficulty(difficulty: $difficulty) @client
+  }
+`;
+
+export const SET_QUESTION_AMOUNT = gql`
+  mutation($questionAmount: String!) {
+    setQuestionAmount(questionAmount: $questionAmount) @client
+  }
+`;

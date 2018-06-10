@@ -3,8 +3,10 @@ import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { compose, graphql } from 'react-apollo';
 
 // Queries / Mutations
-import { ANSWERED_QUESTIONS } from '../graphql/queries';
-import { CLEAR_ANSWERED_QUESTIONS } from '../graphql/mutations';
+import { ANSWERED_QUESTIONS } from '../../graphql/queries';
+import { CLEAR_ANSWERED_QUESTIONS } from '../../graphql/mutations';
+
+import { Container, Title, Divider, SubTitle } from './styles';
 
 class ResultsScreen extends PureComponent {
   handlePlayAgain = () => {
@@ -19,7 +21,18 @@ class ResultsScreen extends PureComponent {
       <FlatList
         data={answeredQuestions}
         keyExtractor={(_, index) => `${index}`}
-        renderItem={({ item }) => <Text>{item.question}</Text>}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              marginBottom: 10,
+              paddingBottom: 5,
+              borderBottomColor: 'gainsboro',
+              borderBottomWidth: 1,
+            }}
+          >
+            <Text style={{ color: 'white' }}>{item.question}</Text>
+          </View>
+        )}
       />
     );
   };
@@ -28,16 +41,18 @@ class ResultsScreen extends PureComponent {
     const { answeredQuestions, correctQuestionsCount } = this.props;
 
     return (
-      <View style={{ margin: 40 }}>
-        <Text>ResultsScreen</Text>
-        <Text>
-          {correctQuestionsCount}/{answeredQuestions.length}
-        </Text>
+      <Container>
+        <Title>The results are in!</Title>
+        <Divider />
+        <SubTitle>
+          {correctQuestionsCount} / {answeredQuestions.length}
+        </SubTitle>
+        <Divider />
         {this.renderQuestions()}
         <TouchableOpacity onPress={this.handlePlayAgain}>
           <Text>PLAY AGAIN</Text>
         </TouchableOpacity>
-      </View>
+      </Container>
     );
   }
 }

@@ -1,9 +1,9 @@
 import { createStackNavigator } from 'react-navigation';
 
 // Screens
-import HomeScreen from './components/HomeScreen';
-import QuizScreen from './components/QuizScreen';
-import ResultsScreen from './components/ResultsScreen';
+import HomeScreen from './components/home/HomeScreen';
+import QuizScreen from './components/quiz/QuizScreen';
+import ResultsScreen from './components/results/ResultsScreen';
 
 export default createStackNavigator(
   {
