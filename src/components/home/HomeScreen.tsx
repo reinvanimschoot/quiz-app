@@ -8,16 +8,8 @@ import { OPTIONS } from '../../graphql/queries';
 import { SET_DIFFICULTY, SET_QUESTION_AMOUNT } from '../../graphql/mutations';
 
 // Styles
-import {
-  Container,
-  Title,
-  OptionButton,
-  BeginButton,
-  BeginText,
-  OptionText,
-  SubTitle,
-  Divider,
-} from './styles';
+import { Container, Title, SubTitle, Divider } from '../commonStyles';
+import { OptionButton, BeginButton, BeginText, OptionText } from './styles';
 
 // Types
 interface Props {
@@ -79,7 +71,7 @@ class HomeScreen extends PureComponent<Props> {
 
   render() {
     return (
-      <Container>
+      <Container centered>
         <Title>WELCOME TO</Title>
         <Title>THE TRIVIA CHALLENGE!</Title>
 

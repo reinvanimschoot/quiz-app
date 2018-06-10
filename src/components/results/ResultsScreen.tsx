@@ -1,16 +1,32 @@
 import React, { PureComponent } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { compose, graphql } from 'react-apollo';
+import { AnsweredQuestion } from '../../graphql/localState';
+
+// Components
+import QuestionItem from './QuestionItem';
 
 // Queries / Mutations
 import { ANSWERED_QUESTIONS } from '../../graphql/queries';
 import { CLEAR_ANSWERED_QUESTIONS } from '../../graphql/mutations';
 
-import { Container, Title, Divider, SubTitle } from './styles';
+// Styles
+import { Container, Title, Divider, SubTitle } from '../commonStyles';
+import { ResultContainer, PlayAgainButton, PlayAgainText } from './styles';
+import { NavigationScreenProp } from 'react-navigation';
 
-class ResultsScreen extends PureComponent {
+// Types
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+  clearAnsweredQuestions: Function;
+  answeredQuestions: AnsweredQuestion[];
+  correctQuestionsCount: number;
+}
+
+class ResultsScreen extends PureComponent<Props> {
   handlePlayAgain = () => {
     this.props.clearAnsweredQuestions();
+
     return this.props.navigation.popToTop();
   };
 
@@ -21,18 +37,8 @@ class ResultsScreen extends PureComponent {
       <FlatList
         data={answeredQuestions}
         keyExtractor={(_, index) => `${index}`}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              marginBottom: 10,
-              paddingBottom: 5,
-              borderBottomColor: 'gainsboro',
-              borderBottomWidth: 1,
-            }}
-          >
-            <Text style={{ color: 'white' }}>{item.question}</Text>
-          </View>
-        )}
+        style={{ flex: 0.7 }}
+        renderItem={({ item }) => <QuestionItem {...item} />}
       />
     );
   };
@@ -42,16 +48,25 @@ class ResultsScreen extends PureComponent {
 
     return (
       <Container>
-        <Title>The results are in!</Title>
+        <ResultContainer>
+          <Title>The results are in!</Title>
+          <Divider />
+          <SubTitle>
+            {correctQuestionsCount} / {answeredQuestions.length}
+          </SubTitle>
+        </ResultContainer>
+
         <Divider />
-        <SubTitle>
-          {correctQuestionsCount} / {answeredQuestions.length}
-        </SubTitle>
-        <Divider />
+
         {this.renderQuestions()}
-        <TouchableOpacity onPress={this.handlePlayAgain}>
-          <Text>PLAY AGAIN</Text>
-        </TouchableOpacity>
+
+        <Divider />
+
+        <View style={{ alignItems: 'center', padding: 30 }}>
+          <PlayAgainButton onPress={this.handlePlayAgain}>
+            <PlayAgainText>PLAY AGAIN</PlayAgainText>
+          </PlayAgainButton>
+        </View>
       </Container>
     );
   }

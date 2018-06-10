@@ -10,17 +10,8 @@ import { TRIVIA_QUESTIONS, OPTIONS } from '../../graphql/queries';
 import { ADD_ANSWERED_QUESTION } from '../../graphql/mutations';
 
 // Styles
-import {
-  Container,
-  Title,
-  SubTitle,
-  Divider,
-  CardContainer,
-  CardText,
-  AnswerButton,
-  AnswerText,
-  AnswerContainer,
-} from './styles';
+import { Container, Title, SubTitle, Divider } from '../commonStyles';
+import { CardContainer, CardText, AnswerButton, AnswerText, AnswerContainer } from './styles';
 
 // Types
 interface Props {
@@ -39,9 +30,9 @@ class QuizScreen extends PureComponent<Props> {
 
     await this.props.addAnsweredQuestion({
       variables: {
-        question: questions[this.state.questionCount].question,
+        question: questions[questionCount].question,
         userAnswer: answer,
-        correctAnswer: questions[this.state.questionCount].correct_answer,
+        correctAnswer: questions[questionCount].correctAnswer,
       },
     });
 
@@ -57,22 +48,20 @@ class QuizScreen extends PureComponent<Props> {
 
     if (loading) {
       return (
-        <Container>
+        <Container centered>
           <Title>READY, SET, GO!</Title>
         </Container>
       );
     }
 
     return (
-      <Container>
+      <Container centered>
         <Title>{questions[this.state.questionCount].category}</Title>
 
         <Divider />
 
         <CardContainer>
-          <CardText>
-            {entities.decode(questions[this.state.questionCount].question, 'all')}
-          </CardText>
+          <CardText>{questions[this.state.questionCount].question}</CardText>
         </CardContainer>
 
         <SubTitle>
@@ -104,9 +93,21 @@ export default compose(
       fetchPolicy: 'network-only',
       variables: { questionAmount, difficulty },
     }),
-    props: ({ data: { loading, triviaQuestions } }) => ({
-      questions: loading ? null : triviaQuestions.results,
-      loading,
-    }),
+    props: ({ data: { loading, triviaQuestions } }) => {
+      const formattedQuestions = loading
+        ? null
+        : triviaQuestions.results.map(q => {
+            return {
+              question: entities.decode(q.question),
+              category: q.category,
+              correctAnswer: q.correct_answer,
+            };
+          });
+
+      return {
+        questions: loading ? null : formattedQuestions,
+        loading,
+      };
+    },
   }),
 )(QuizScreen);
