@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { material, systemWeights } from 'react-native-typography';
 
+import { pink } from '../../constants/colors';
+
 export const ResultContainer = styled.View`
   align-items: center;
 `;
@@ -15,17 +17,22 @@ export const QuestionText = styled.Text`
 `;
 
 export const QuestionContainer = styled.View`
-  flex: 1;
   margin-bottom: 10px;
   padding-bottom: 5px;
   flex-direction: row;
   align-items: center;
+  flex: 1;
+`;
+
+export const PlayAgainContainer = styled.View`
+  align-items: center;
+  padding: 30px;
 `;
 
 export const PlayAgainButton = styled.TouchableOpacity`
   padding: 10px;
-  border: solid 2px #ce5981;
-  background-color: #ce5981;
+  border: solid 2px ${pink};
+  background-color: ${pink};
   border-radius: 15px;
   width: 250px;
   align-items: center;

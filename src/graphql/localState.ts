@@ -2,6 +2,13 @@ import { Context } from 'react-apollo';
 
 import { ANSWERED_QUESTIONS } from './queries';
 
+// Types
+export interface AnsweredQuestion {
+  question: string;
+  userAnswer: string;
+  correctAnswer: string;
+}
+
 export const defaults: {
   answeredQuestions: AnsweredQuestion[];
   questionAmount: string;
@@ -54,10 +61,3 @@ export const resolvers = {
     },
   },
 };
-
-// Types
-export interface AnsweredQuestion {
-  question: string;
-  userAnswer: string;
-  correctAnswer: string;
-}

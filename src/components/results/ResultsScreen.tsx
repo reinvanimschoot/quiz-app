@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { compose, graphql } from 'react-apollo';
 import { AnsweredQuestion } from '../../graphql/localState';
+import { NavigationScreenProp } from 'react-navigation';
+import Confetti from 'react-native-confetti';
 
 // Components
 import QuestionItem from './QuestionItem';
@@ -12,8 +14,7 @@ import { CLEAR_ANSWERED_QUESTIONS } from '../../graphql/mutations';
 
 // Styles
 import { Container, Title, Divider, SubTitle } from '../commonStyles';
-import { ResultContainer, PlayAgainButton, PlayAgainText } from './styles';
-import { NavigationScreenProp } from 'react-navigation';
+import { ResultContainer, PlayAgainButton, PlayAgainText, PlayAgainContainer } from './styles';
 
 // Types
 interface Props {
@@ -24,6 +25,20 @@ interface Props {
 }
 
 class ResultsScreen extends PureComponent<Props> {
+  ConfettiView = React.createRef();
+
+  componentDidMount() {
+    if (this.ConfettiView) {
+      this.ConfettiView.current.startConfetti();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.ConfettiView) {
+      this.ConfettiView.current.stopConfetti();
+    }
+  }
+
   handlePlayAgain = () => {
     this.props.clearAnsweredQuestions();
 
@@ -45,9 +60,10 @@ class ResultsScreen extends PureComponent<Props> {
 
   render() {
     const { answeredQuestions, correctQuestionsCount } = this.props;
-
     return (
       <Container>
+        <Confetti confettiCount={60} duration={3000} ref={this.ConfettiView} />
+
         <ResultContainer>
           <Title>The results are in!</Title>
           <Divider />
@@ -62,18 +78,18 @@ class ResultsScreen extends PureComponent<Props> {
 
         <Divider />
 
-        <View style={{ alignItems: 'center', padding: 30 }}>
+        <PlayAgainContainer>
           <PlayAgainButton onPress={this.handlePlayAgain}>
             <PlayAgainText>PLAY AGAIN</PlayAgainText>
           </PlayAgainButton>
-        </View>
+        </PlayAgainContainer>
       </Container>
     );
   }
 }
 
 export default compose(
-  graphql(ANSWERED_QUESTIONS, {
+  graphql<{}, { answeredQuestions: AnsweredQuestion[] }, {}, {}>(ANSWERED_QUESTIONS, {
     props: ({ data: { answeredQuestions } }) => {
       const correctQuestionsCount = answeredQuestions.filter(q => q.userAnswer === q.correctAnswer)
         .length;

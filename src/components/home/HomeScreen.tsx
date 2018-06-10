@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { graphql, compose } from 'react-apollo';
 import { NavigationScreenProp } from 'react-navigation';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
+import { Options } from '../../types';
 
 // Queries / Mutations
 import { OPTIONS } from '../../graphql/queries';
@@ -75,6 +76,8 @@ class HomeScreen extends PureComponent<Props> {
         <Title>WELCOME TO</Title>
         <Title>THE TRIVIA CHALLENGE!</Title>
 
+        <Divider />
+
         <SubTitle>Can you score 100% on these True or False questions?</SubTitle>
 
         <Divider />
@@ -110,7 +113,7 @@ class HomeScreen extends PureComponent<Props> {
 export default compose(
   graphql(SET_DIFFICULTY, { name: 'setDifficulty' }),
   graphql(SET_QUESTION_AMOUNT, { name: 'setQuestionAmount' }),
-  graphql(OPTIONS, {
+  graphql<{}, Options, {}, {}>(OPTIONS, {
     props: ({ data }) => ({
       questionAmount: data.questionAmount,
       difficulty: data.difficulty.toUpperCase(),

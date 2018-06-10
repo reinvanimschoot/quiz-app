@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Styles
+import { green, red } from '../../constants/colors';
 import { QuestionContainer, QuestionText } from './styles';
 
 // Types
@@ -17,7 +18,7 @@ class QuestionItem extends PureComponent<Props> {
     const answerWasCorrect = userAnswer === correctAnswer;
 
     const iconName = answerWasCorrect ? 'check' : 'remove';
-    const iconColor = answerWasCorrect ? '#50fa7b' : '#ff5555';
+    const iconColor = answerWasCorrect ? green : red;
 
     return (
       <QuestionContainer>

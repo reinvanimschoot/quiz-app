@@ -39,3 +39,8 @@ export const AnswerText = styled.Text`
   ${systemWeights.bold};
   color: ${(props: { color: string }) => props.color};
 `;
+
+export const QuitText = styled.Text`
+  ${material.body2Object};
+  color: grey;
+`;
