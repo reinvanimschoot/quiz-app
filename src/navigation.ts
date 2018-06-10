@@ -1,11 +1,15 @@
 import { createStackNavigator } from 'react-navigation';
 
 // Screens
-import Placeholder from './Placeholder';
+import HomeScreen from './components/HomeScreen';
+import QuizScreen from './components/QuizScreen';
+import ResultsScreen from './components/ResultsScreen';
 
 export default createStackNavigator(
   {
-    HomeScreen: Placeholder,
+    HomeScreen: HomeScreen,
+    QuizScreen: QuizScreen,
+    ResultsScreen: ResultsScreen,
   },
   {
     initialRouteName: 'HomeScreen',
